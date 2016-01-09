@@ -7,7 +7,9 @@ var app = express();
 var fs = require('fs');
 var bodyParser = require('body-parser');
 var path = require('path');
-var port = process.env.PORT || 2000;
+var request = require('request');
+var port = process.env.PORT || 3000;
+
 
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -15,11 +17,24 @@ app.use(bodyParser.json());
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 
+var url = "http://developer.cumtd.com/api/v2.2/json/GetStop?" +
+    "key=d99803c970a04223998cabd90a741633" +
+    "&stop_id=it"
+
+request({
+    url: url,
+    json: true
+}, function (error, response, body) {
+
+    if (!error && response.statusCode === 200) {
+        console.log(body) // Print the json response
+    }
+})
+
 app.get('/favorites', function(req, res){
   var data = fs.readFileSync('./data.json');
   res.setHeader('Content-Type', 'application/json');
   res.send(data);
-    
 });
 
 app.get('favorites', function(req, res){
