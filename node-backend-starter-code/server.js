@@ -29,7 +29,21 @@ request({
     if (!error && response.statusCode === 200) {
         console.log(body) // Print the json response
     }
-})
+});
+
+app.get('/movies', function(req, res){
+    request({
+    url: url,
+    json: true
+}, function (error, response, body) {
+
+    if (!error && response.statusCode === 200) {
+        res.send(body); // Print the json response
+    }
+});
+
+
+});
 
 app.get('/favorites', function(req, res){
   var data = fs.readFileSync('./data.json');
